@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>New Tab</title>
+  </head>
+  <body>
+      <div id="container"></div>
+      <br>
+      <h1 id="hexcode"></h1>
+      <br>
+      <h1 id="result"></h1>
+      <br>
+      <div class="buttons" id="colors3"></div>
+      <div class="buttons" id="colors5"></div>
+      <div class="buttons" id="colors7"></div>
+  </body>
+
+<script>
+let isChosen = false;
+let rightcolor;
+let isRightcolor;
+let numberOfDivs = 5;
+const colors = [];
+window.onload = function loadColors(){
+for (let i = 0; i < numberOfDivs; i++) {
+  // Create a div element
+  const div = document.createElement("div");
+  // Generate a random hex color
+  let color = Math.floor(Math.random()*16777215).toString(16);
+
+  while (color.length < 6) {
+  color = "0" + color;
+  }
+  color = "#" + color;
+  // Set the div's background color to the random color
+  div.style.backgroundColor = color;
+  div.id = "Div" + i;
+  div.className = "coloursDiv";
+  // Add the div to the container
+      const container = document.getElementById("container");
+    container.appendChild(div);
+  // Add the color to the colors array
+  colors.push(color);
+}
+// Save the colors as variables
+rightcolor = colors[Math.floor(Math.random() * numberOfDivs)];
+const hexcode = document.getElementById("hexcode");
+hexcode.innerHTML = rightcolor;
+
+function divBackgroundColorToHex(div) {
+  // Get the div's background-color style property value
+  const color = div.style.backgroundColor;
+
+  // If the value is a named color, convert it to a hex code
+  if (color.indexOf('rgb') === -1) {
+    const div = document.createElement('div');
+    div.style.color = color;
+    document.body.appendChild(div);
+    color = getComputedStyle(div).color;
+    document.body.removeChild(div);
+  }
+
+  // Extract the hex code from the RGB value
+  const hex = color.match(/\d+/g).map(function(a){return ('0' + parseInt(a).toString(16)).slice(-2)}).join('');
+  return '#' + hex;
+}
+//----------------------------------------------------------------
+function checkDivColor(div) {
+  // Get the div's background color
+  let divColor = divBackgroundColorToHex(div);
+  if (divColor.toLowerCase() === rightcolor) {
+    //The div's color is the same as the given hex color
+    return true;
+  } else {
+    //The div's color is not the same as the given hex color
+    return false;
+  }
+}
+    for (let i = 0; i < numberOfDivs; i++) {
+  document.getElementById("Div"+i).onclick = function() {
+      isRightcolor = checkDivColor(document.getElementById("Div"+i));
+      if (isRightcolor == true && isChosen == false) {
+        result = document.getElementById("result");
+        result.style.backgroundColor = "#00ff00";
+        result.innerHTML = "Win";
+        isChosen = true;
+    }
+    else{
+        result = document.getElementById("result");
+        result.innerHTML = "Loose";
+        result.style.backgroundColor = "#ff0000";
+        isChosen = true;
+    }
+  };
+    
+}
+//----------------------------------------------------------------
+    function deleteElementById(id) {
+  // Get the element with the specified id
+  const element = document.getElementById(id);
+
+  // If the element exists, remove it from the DOM
+  if (element) {
+    element.parentNode.removeChild(element);
+  }
+}
+    function deleteAllElements(){
+        for (let i = 0; i < numberOfDivs; i++) {
+        deleteElementById("Div"+i);
+  }
+}
+    
+    document.getElementById("colors3").onclick = function() {
+        deleteAllElements();
+        numberOfDivs = 3;
+        isChosen = false;
+        colors.length = 0;
+        loadColors();
+  };
+    document.getElementById("colors5").onclick = function() {
+        deleteAllElements();
+        numberOfDivs = 5;
+        isChosen = false;
+        colors.length = 0;
+        loadColors();
+  };
+    document.getElementById("colors7").onclick = function() {
+        deleteAllElements();
+        numberOfDivs = 7;
+        isChosen = false;
+        colors.length = 0;
+        loadColors();
+  };
+}
+</script>
+    <style>
+       body { 
+           background-color: #141414;
+        margin: 8%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      #container {
+        margin-top: 0px;
+        margin-left: 100%;
+        margin-right: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+       .coloursDiv {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: inline-block;
+        margin: 20px;
+      }
+       #hexcode {
+        font-size: 100px;
+        display: flex;
+        margin: 10px;
+        margin-left: 100%;
+        margin-right: 100%;
+        align-items: center;
+        justify-content: center;
+        font-family: "Comic Sans MS";
+      }
+        #result{
+        margin-left: 100%;
+        margin-right: 100%;
+        font-family: "Comic Sans MS";
+        padding: 5px;
+        border-radius: 10px;
+        }
+       .buttons{
+        width: 150px;
+        height: 100px;
+        border-radius: 25px;
+        display: inline-block;
+        margin: 20px;
+        }
+        #colors3{
+         background-color: red;
+        }
+        #colors5{
+         background-color: blue;   
+        }
+        #colors7{
+         background-color: yellow;   
+        }
+    </style>
+</html>
